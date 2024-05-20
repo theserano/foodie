@@ -1,7 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:foodie/components/my_button.dart';
 import 'package:foodie/components/my_text_field.dart';
-import 'package:foodie/pages/home_page.dart';
+import 'package:foodie/services/auth/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
@@ -16,9 +18,18 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void login() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+  void login() async {
+    final authService = AuthService();
+
+    try{
+      await authService.signInWithEmailPassword(emailController.text, passwordController.text);
+    }catch(e) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text(e.toString()),
+              ));
+    }
   }
 
   @override

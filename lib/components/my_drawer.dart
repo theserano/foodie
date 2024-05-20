@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/components/my_drawer_title.dart';
 import 'package:foodie/pages/settings_page.dart';
+import 'package:foodie/services/auth/auth_service.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
+
+  void logout() async {
+    final authService = AuthService();
+    authService.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,13 @@ class MyDrawer extends StatelessWidget {
                         builder: (context) => const SettingsPage()));
               }),
           const Spacer(),
-          MyDrawerTitle(text: 'L O G O U T', icon: Icons.logout, onTap: () {}),
+          MyDrawerTitle(
+              text: 'L O G O U T',
+              icon: Icons.logout,
+              onTap: () {
+                logout();
+                Navigator.pop(context);
+              }),
           const SizedBox(
             height: 25,
           )
