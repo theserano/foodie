@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodie/services/auth/auth_gate.dart';
 import 'package:foodie/firebase_options.dart';
 import 'package:foodie/models/restaurant.dart';
@@ -9,7 +11,18 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform );
+  // Load the .env file and handle potential errors
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    if (kDebugMode) {
+      print("Error loading .env file: $e");
+    }
+  }
+  await Firebase.initializeApp(
+    name: 'Foodie',
+    options: DefaultFirebaseOptions.currentPlatform 
+  );
 
   runApp(MultiProvider(
     providers: [
